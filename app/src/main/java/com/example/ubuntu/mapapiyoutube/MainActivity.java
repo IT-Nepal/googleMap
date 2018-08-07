@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
     public boolean isServicesOK() {
         Log.d(TAG, "is service ok: checking google service version");
         int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(MainActivity.this);
