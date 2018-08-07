@@ -21,7 +21,10 @@ public class MapsActivity extends AppCompatActivity {
     }
 
     //explicitly check permission after marshmallow
+
+
     private void getLocationPermission(){
+
     String permission[] = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
 //    coarse location is for network provider's location
 //    and fine location is for both gps provider and network location provider.
@@ -41,6 +44,7 @@ public class MapsActivity extends AppCompatActivity {
     }
 
     @Override
+
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         mLocationPermissionGranted = false;
         switch(requestCode){
