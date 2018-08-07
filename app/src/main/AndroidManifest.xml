@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.ubuntu.mapapiyoutube">
 
+    <!--permission added-->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -13,6 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!--api added-->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDBQfcC7_dpTBbuUIjgeE8mSv6o9H9UlfI" />
