@@ -7,22 +7,43 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
-public class MapsActivity extends AppCompatActivity {
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+    public void onMapReady(GoogleMap googleMap){
+        Toast.makeText(this,"Map is ready",Toast.LENGTH_LONG).show();
+        mMap = googleMap;
+    }
 
     private static final String  FineLocation = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String CourseLocation = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LocationPermissionRequestCode = 123;
     private Boolean mLocationPermissionGranted = false;
+    private GoogleMap mMap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
     }
+//   SupportMapFragment:- A Map component in an app.
+// This fragment is the simplest way to place a map in an application.
+// It's a wrapper around a view of a map to automatically handle the necessary life cycle needs.
+// Being a fragment, this component can be added to an activity's layout file simply with the XML below.
+    public void initMap() {
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
+        mapFragment.getMapAsync(MapsActivity.this);
+//            getMapAsync(OnMapReadyCallback). This class automatically initializes the maps system
+//         and the view.
 
-    //explicitly check permission after marshmallow
 
+        //explicitly check permission after marshmallow
 
+    }
     private void getLocationPermission(){
 
     String permission[] = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
