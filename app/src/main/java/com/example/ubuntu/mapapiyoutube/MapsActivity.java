@@ -29,6 +29,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         if(mLocationPermissionGranted){
             getDeviceLocation();
+            if(ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                return;
+            }mMap.setMyLocationEnabled(true); // show blue color in current location
+//            mMap.getUiSettings().setMyLocationButtonEnabled(false); //it hides show current location button
         }
 
         Log.d(TAG,"map is ready");
@@ -48,11 +54,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         getLocationPermission();
 
-        if(ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-return;
-        }mMap.setMyLocationEnabled(true);
+
     }
 
     public void getDeviceLocation(){
