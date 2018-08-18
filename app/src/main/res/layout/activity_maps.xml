@@ -33,7 +33,7 @@
         <ImageView
             android:layout_width="15dp"
             android:layout_height="15dp"
-            android:id="@+id/search_icon"
+            android:id="@+id/iv_search"
             android:src="@drawable/ic_search_black_24dp"
             android:layout_marginLeft="10dp"
             android:layout_centerVertical="true"/>
@@ -41,10 +41,11 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/et"
-            android:layout_toRightOf="@id/search_icon"
+            android:id="@+id/et_search"
+            android:layout_toRightOf="@id/iv_search"
             android:layout_centerVertical="true"
             android:textSize="15sp"
-            android:hint="Enter address, city or zip code"/>
+            android:hint="Enter address, city or zip code"
+            android:imeOptions="actionSearch"/>
     </RelativeLayout>
 </RelativeLayout>
