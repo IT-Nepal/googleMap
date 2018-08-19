@@ -2,6 +2,8 @@ package com.example.ubuntu.mapapiyoutube;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -9,6 +11,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -20,6 +26,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -34,7 +44,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
                 return;
             }mMap.setMyLocationEnabled(true); // show blue color in current location
-//            mMap.getUiSettings().setMyLocationButtonEnabled(false); //it hides show current location button
+            mMap.getUiSettings().setMyLocationButtonEnabled(false); //it hides show current location button
+
+
+            init();
         }
 
         Log.d(TAG,"map is ready");
@@ -47,14 +60,82 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private static final float DEFAULT_ZOOM = 15f;
     private FusedLocationProviderClient mfusedLocationProviderclient; //to get device current location
+
+    //widgets
+    private EditText searchText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        searchText = findViewById(R.id.et_search);
+
         getLocationPermission();
 
 
+    }
+    //reason for init(), when we click enter button then it will work as enter, instead of moving to the
+//        nextline;
+
+
+    //            IME_ACTION_SEARCH
+//            Bits of IME_MASK_ACTION: the action key performs a "search" operation,
+// taking the user to the results of searching for the text they have typed (in whatever context is appropriate).
+
+//            	IME_ACTION_DONE
+//Bits of IME_MASK_ACTION: the action key performs a "done" operation,
+// typically meaning there is nothing more to input and the IME will be closed.
+
+//            KeyEvent.ACTION_DOWN
+//   Each key press is described by a sequence of key events. A key press starts with a key event with ACTION_DOWN.
+// If the key is held sufficiently long that it repeats,
+// then the initial down is followed additional key events with ACTION_DOWN and a non-zero value for getRepeatCount().
+
+
+    //            KEYCODE_ENTER
+//Key code constant: Enter key.
+    private void init(){
+        Log.d(TAG,"init:initialization");
+// searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//     @Override
+//     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//        if(actionId == EditorInfo.IME_ACTION_DONE
+//                || actionId == EditorInfo.IME_ACTION_SEARCH
+//                || event.getAction()== KeyEvent.ACTION_DOWN
+//                || event.getAction()== KeyEvent.KEYCODE_ENTER){
+//
+            geolocate();
+//        }
+//
+//         return false;
+//     }
+// });
+
+
+    }
+
+//    GeoCoder
+//    A class for handling geocoding and reverse geocoding.
+// Geocoding is the process of transforming a street address or other description of a location into a (latitude, longitude) coordinate.
+// Reverse geocoding is the process of transforming a (latitude, longitude) coordinate into a (partial) address.
+    private void geolocate(){
+        Log.d(TAG, "geoLocate:geolocating");
+        String searchString = searchText.getText().toString();
+        Geocoder geocoder = new Geocoder(MapsActivity.this);
+        List<Address> list = new ArrayList<>();
+
+        try{
+        list = geocoder.getFromLocationName(searchString,1); //1 for maximum result; it gives list of addresses
+                                            //it takes searchString as location name and find its longtitude and latitude.
+        }catch(IOException e){
+        Log.e(TAG,"geoLocate:IOException" + e.getMessage());
+        }
+        if(list.size() > 0){
+            Address address = list.get(0);
+//
+  Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
+            Log.d(TAG,"geoLocation: found a location" + address.toString());
+        }
     }
 
     public void getDeviceLocation(){
